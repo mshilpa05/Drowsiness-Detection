@@ -15,7 +15,7 @@ reye = cv2.CascadeClassifier('haar cascade files\haarcascade_righteye_2splits.xm
 
 
 
-lbl=['Close','Open']
+lbl=['Drowsy','Alert']
 
 model = load_model('models/cnncat2.h5')
 path = os.getcwd()
@@ -52,9 +52,9 @@ while(True):
         r_eye = np.expand_dims(r_eye,axis=0)
         rpred = model.predict_classes(r_eye)
         if(rpred[0]==1):
-            lbl='Open' 
+            lbl='Alert'
         if(rpred[0]==0):
-            lbl='Closed'
+            lbl='Drowsy'
         break
 
     for (x,y,w,h) in left_eye:
@@ -67,18 +67,18 @@ while(True):
         l_eye = np.expand_dims(l_eye,axis=0)
         lpred = model.predict_classes(l_eye)
         if(lpred[0]==1):
-            lbl='Open'   
+            lbl='Alert'
         if(lpred[0]==0):
-            lbl='Closed'
+            lbl='Drowsy'
         break
 
     if(rpred[0]==0 and lpred[0]==0):
         score=score+1
-        cv2.putText(frame,"Closed",(10,height-20), font, 1,(255,255,255),1,cv2.LINE_AA)
+        cv2.putText(frame,"Drowsy",(10,height-20), font, 1,(255,255,255),1,cv2.LINE_AA)
     # if(rpred[0]==1 or lpred[0]==1):
     else:
         score=score-1
-        cv2.putText(frame,"Open",(10,height-20), font, 1,(255,255,255),1,cv2.LINE_AA)
+        cv2.putText(frame,"Alert",(10,height-20), font, 1,(255,255,255),1,cv2.LINE_AA)
     
         
     if(score<0):
